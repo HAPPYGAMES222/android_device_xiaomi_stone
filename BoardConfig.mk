@@ -125,7 +125,6 @@ else
 TARGET_KERNEL_SOURCE := kernel/xiaomi/stone
 TARGET_KERNEL_CONFIG := stone_defconfig
 TARGET_KERNEL_NO_GCC := true
-BOARD_PREBUILT_DTBOIMAGE := $(DEVICE_PATH)/prebuilt/dtbo.img
 endif
 
 # Media

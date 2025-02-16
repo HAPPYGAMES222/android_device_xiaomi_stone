@@ -84,17 +84,22 @@ TARGET_INIT_VENDOR_LIB := //$(DEVICE_PATH):init_stone
 TARGET_RECOVERY_DEVICE_MODULES := init_stone
 
 # Kernel
+
+# Fix prebuilt build
 $(shell mkdir -p $(OUT_DIR)/target/product/stone/obj/KERNEL_OBJ/usr)
+
 BOARD_INCLUDE_DTB_IN_BOOTIMG := true
 BOARD_KERNEL_BASE := 0x00000000
 BOARD_KERNEL_IMAGE_NAME := Image
 BOARD_KERNEL_PAGESIZE := 4096
+BOARD_KERNEL_SEPARATED_DTBO := true
 KERNEL_LD := LD=ld.lld
 
 BOARD_BOOT_HEADER_VERSION := 3
 BOARD_MKBOOTIMG_ARGS += --header_version $(BOARD_BOOT_HEADER_VERSION)
 
 TARGET_KERNEL_ADDITIONAL_FLAGS := DTC_EXT=$(shell pwd)/prebuilts/misc/linux-x86/dtc/dtc LLVM=1
+TARGET_KERNEL_SOURCE := kernel/xiaomi/stone
 
 BOARD_KERNEL_CMDLINE += androidboot.hardware=qcom
 BOARD_KERNEL_CMDLINE += androidboot.memcg=1
@@ -110,22 +115,17 @@ BOARD_KERNEL_CMDLINE += ip6table_raw.raw_before_defrag=1
 BOARD_KERNEL_CMDLINE += androidboot.init_fatal_reboot_target=recovery
 
 # Prebuilt Kernel
-ifeq ($(PREBUILT_KERNEL),true)
-BOARD_KERNEL_SEPARATED_DTBO := true
-TARGET_NO_KERNEL_OVERRIDE := true
-TARGET_NO_KERNEL := false
-TARGET_KERNEL_SOURCE := $(DEVICE_PATH)-kernel/kernel-headers
+BOARD_KERNEL_BINARIES := kernel
 BOARD_PREBUILT_DTBOIMAGE := $(DEVICE_PATH)-kernel/dtbo.img
+TARGET_FORCE_PREBUILT_KERNEL := true
 TARGET_PREBUILT_KERNEL := $(DEVICE_PATH)-kernel/kernel
+TARGET_KERNEL_CONFIG := holi_QGKI
 TARGET_PREBUILT_DTB := $(DEVICE_PATH)-kernel/dtb.img
 PRODUCT_COPY_FILES += \
     $(DEVICE_PATH)-kernel/dtb.img:$(TARGET_COPY_OUT)/dtb.img \
-    $(DEVICE_PATH)-kernel/kernel:kernel
-else
-TARGET_KERNEL_SOURCE := kernel/xiaomi/stone
-TARGET_KERNEL_CONFIG := stone_defconfig
-TARGET_KERNEL_NO_GCC := true
-endif
+    $(DEVICE_PATH)-kernel/kernel:kernel \
+    $(call find-copy-subdir-files,*,$(DEVICE_PATH)-kernel/ramdisk-modules/,$(TARGET_COPY_OUT_VENDOR_RAMDISK)/lib/modules) \
+    $(call find-copy-subdir-files,*,$(DEVICE_PATH)-kernel/vendor-modules/,$(TARGET_COPY_OUT_VENDOR)/lib/modules)
 
 # Media
 TARGET_USES_ION := true

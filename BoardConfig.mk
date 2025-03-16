@@ -104,6 +104,7 @@ TARGET_KERNEL_SOURCE := kernel/xiaomi/stone
 BOARD_KERNEL_CMDLINE += androidboot.hardware=qcom
 BOARD_KERNEL_CMDLINE += androidboot.memcg=1
 BOARD_KERNEL_CMDLINE += androidboot.usbcontroller=4e00000.dwc3
+BOARD_KERNEL_CMDLINE += androidboot.selinux=permissive
 BOARD_KERNEL_CMDLINE += cgroup.memory=nokmem,nosocket
 BOARD_KERNEL_CMDLINE += loop.max_part=7
 BOARD_KERNEL_CMDLINE += msm_rtb.filter=0x237

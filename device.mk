@@ -280,10 +280,6 @@ PRODUCT_PACKAGES += \
     vendor.lineage.health-service.default
 endif
 
-# LiveDisplay
-PRODUCT_PACKAGES += \
-    vendor.lineage.livedisplay@2.0-service-sdm
-
 # Kernel
 PRODUCT_SET_DEBUGFS_RESTRICTIONS := true
 PRODUCT_ENABLE_UFFD_GC := false
